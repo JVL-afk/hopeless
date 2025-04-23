@@ -1,11 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense } from 'react'
+import CheckoutPage from './CheckoutPage';
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { FaPaypal, FaCreditCard, FaArrowLeft } from 'react-icons/fa'
 
-export default function CheckoutPage() {
+export default function Page() { 
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CheckoutPage />
+    </Suspense>
   const searchParams = useSearchParams()
   const planParam = searchParams.get('plan')
   
