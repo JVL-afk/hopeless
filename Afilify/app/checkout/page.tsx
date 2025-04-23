@@ -6,8 +6,12 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { FaPaypal, FaCreditCard, FaArrowLeft } from 'react-icons/fa'
 
-export default function Page() { 
-  return (
+export default function CheckoutPage() { 
+  const searchParams = useSearchParams();
+  const paramValue = searchParams.get('key'); // Replace 'key' with the query parameter you need
+  
+  return <div>Checkout Page - Key Value: {paramValue}</div>;
+}
     <Suspense fallback={<div>Loading...</div>}>
       <CheckoutPage />
     </Suspense>
