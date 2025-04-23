@@ -16,7 +16,7 @@ export default function CheckoutPage() {
       
       <CheckoutPage />
     </Suspense>
-     ^^^^^^^^^^
+     
   const searchParams = useSearchParams()
   const planParam = searchParams.get('plan')
   
