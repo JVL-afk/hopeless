@@ -1,35 +1,24 @@
 'use client'
 
 import { Suspense } from 'react'
-import CheckoutPage from './path/to/CheckoutPage';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { FaPaypal, FaCreditCard, FaArrowLeft } from 'react-icons/fa'
 
-export default function CheckoutPage() { 
-  const searchParams = useSearchParams();
-  const paramValue = searchParams.get('key'); // Replace 'key' with the query parameter you need
-  
-  return <div>Checkout Page - Key Value: {paramValue}</div>;
-}
-    <Suspense fallback={<div>Loading...</div>}>
-      
-      <CheckoutPage />
-    </Suspense>
-     
+// Create a separate component for the checkout content
+function CheckoutContent() {
   const searchParams = useSearchParams()
   const planParam = searchParams.get('plan')
-  
   const [plan, setPlan] = useState({
     name: 'Pro',
     price: 10,
     billingPeriod: 'monthly'
   })
-  
   const [paymentMethod, setPaymentMethod] = useState('paypal')
   const [isProcessing, setIsProcessing] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
-  
+
   useEffect(() => {
     // Set plan based on URL parameter
     if (planParam === 'enterprise') {
@@ -40,18 +29,17 @@ export default function CheckoutPage() {
       })
     }
   }, [planParam])
-  
+
   const handleSubmit = (e) => {
     e.preventDefault()
     setIsProcessing(true)
-    
     // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false)
       setIsSuccess(true)
     }, 2000)
   }
-  
+
   if (isSuccess) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -77,7 +65,7 @@ export default function CheckoutPage() {
       </div>
     )
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -87,7 +75,6 @@ export default function CheckoutPage() {
             Back to Pricing
           </Link>
         </div>
-        
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6">
             <h1 className="text-2xl font-bold text-gray-900">Checkout</h1>
@@ -95,7 +82,6 @@ export default function CheckoutPage() {
               Complete your subscription to AFFILIFY {plan.name}
             </p>
           </div>
-          
           <div className="border-t border-gray-200">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Order Summary */}
@@ -120,11 +106,9 @@ export default function CheckoutPage() {
                   </div>
                 </div>
               </div>
-              
               {/* Payment Form */}
               <div className="md:col-span-2 p-6">
                 <h2 className="text-lg font-medium text-gray-900 mb-4">Payment Method</h2>
-                
                 <div className="mb-6">
                   <div className="flex space-x-4">
                     <button
@@ -153,7 +137,6 @@ export default function CheckoutPage() {
                     </button>
                   </div>
                 </div>
-                
                 {paymentMethod === 'paypal' ? (
                   <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
                     <div className="flex items-center justify-center mb-4">
@@ -227,23 +210,10 @@ export default function CheckoutPage() {
                       disabled={isProcessing}
                       className="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
-                      {isProcessing ? 'Processing...' : `Pay $${plan.price}`}
+                      {isProcessing ? 'Processing...' : 'Pay Now'}
                     </button>
                   </form>
                 )}
-                
-                <div className="mt-6 text-center text-sm text-gray-500">
-                  <p>
-                    By completing this purchase, you agree to our{' '}
-                    <Link href="/terms" className="text-primary-600 hover:text-primary-500">
-                      Terms of Service
-                    </Link>{' '}
-                    and{' '}
-                    <Link href="/privacy" className="text-primary-600 hover:text-primary-500">
-                      Privacy Policy
-                    </Link>
-                  </p>
-                </div>
               </div>
             </div>
           </div>
@@ -252,3 +222,13 @@ export default function CheckoutPage() {
     </div>
   )
 }
+
+// Main page component with Suspense
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CheckoutContent />
+    </Suspense>
+  )
+}
+
