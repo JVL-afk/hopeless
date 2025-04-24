@@ -13,6 +13,7 @@ export default function CheckoutPage() {
   return <div>Checkout Page - Key Value: {paramValue}</div>;
 }
     <Suspense fallback={<div>Loading...</div>}>
+      
       <CheckoutPage />
     </Suspense>
      
